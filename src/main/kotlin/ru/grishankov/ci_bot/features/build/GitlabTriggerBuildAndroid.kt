@@ -6,11 +6,9 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 import ru.grishankov.ci_bot.config.AppConfig
 import ru.grishankov.ci_bot.database.Project
 import ru.grishankov.ci_bot.database.ProjectAndroidVersion
-import ru.grishankov.ci_bot.database.ProjectAndroidVersions
 import ru.grishankov.ci_bot.httpClient.httpClient
 
 suspend fun buildBranchAndroid(bot: Bot, chatId: ChatId.Id, messageId: Long?, branch: String, projectId: Int) {
@@ -28,7 +26,9 @@ private suspend fun gitlabTrigger(project: Project, version: Int, chatId: Long, 
             parameter("token", project.token)
             parameter("variables[TOKEN_TELEGRAM_BOT]", AppConfig.configuration.botToken)
             parameter("variables[TOKEN_TELEGRAM_CHAT]", chatId)
-            parameter("variables[VERSION_ANDROID]", version)
+            parameter("variables[VERSION_CODE]", version)
+//            parameter("variables[VERSION_NAME_CODE]", version)
+            parameter("variables[PROJECT_NAME]", project.name)
         }
     }.getOrNull()
 }

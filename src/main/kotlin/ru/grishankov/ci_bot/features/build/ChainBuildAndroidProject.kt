@@ -28,7 +28,9 @@ fun Dispatcher.addChainBuildAndroidProject(transactions: RuntimeTransaction) {
 
         val branches = transaction {
             val project = Project[id]
-            val branch = WorkingBranch.all().find { it.project.id.value == project.id.value }
+            val branch = WorkingBranch.all().firstOrNull {
+                runCatching { it.project.id.value == project.id.value }.getOrDefault(false)
+            }
             val idBranch = branch?.id ?: WorkingBranches.insertAndGetId { it[idProject] = project.id }
             WorkingBranch[idBranch]
         }

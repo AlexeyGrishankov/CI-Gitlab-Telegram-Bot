@@ -2,6 +2,7 @@ package ru.grishankov.ci_bot
 
 import com.github.kotlintelegrambot.bot
 import com.github.kotlintelegrambot.dispatch
+import com.github.kotlintelegrambot.dispatcher.command
 import com.github.kotlintelegrambot.dispatcher.message
 import com.github.kotlintelegrambot.entities.ChatId
 import com.github.kotlintelegrambot.entities.InlineKeyboardMarkup
@@ -54,6 +55,9 @@ fun main() {
         token = AppConfig.configuration.botToken
 
         dispatch {
+            command("id") {
+                bot.sendMessage(ChatId.fromId(message.chat.id), message.chat.id.toString())
+            }
             addCommandMenu()
             addChainListProjects()
             addChainCreateProject(transactions)
